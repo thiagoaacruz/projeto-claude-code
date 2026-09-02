@@ -1,6 +1,8 @@
-# Projeto 1
+# Veloce Motors — Landing Page
 
-Projeto Next.js criado com `create-next-app`, seguindo as convenções descritas em [`CLAUDE.md`](./CLAUDE.md).
+Landing page institucional para uma concessionária de veículos fictícia (Veloce Motors), construída com Next.js. Apresenta a marca, diferenciais, modelos em destaque e uma chamada para agendamento de test-drive.
+
+Projeto criado com `create-next-app`, seguindo as convenções descritas em [`CLAUDE.md`](./CLAUDE.md).
 
 ## Tech Stack
 
@@ -10,6 +12,17 @@ Projeto Next.js criado com `create-next-app`, seguindo as convenções descritas
 - ESLint 9 (`eslint-config-next`)
 
 > Convenções do projeto (shadcn/ui, React Hook Form + Zod, Server Actions, estrutura de pastas) estão documentadas em [`CLAUDE.md`](./CLAUDE.md) e devem ser seguidas conforme o projeto evoluir.
+
+## Seções da página
+
+| Seção | Componente | Descrição |
+|---|---|---|
+| Header | `site-header.tsx` | Navegação principal |
+| Hero | `hero-section.tsx` | Chamada principal ("O carro certo para cada trajeto") |
+| Diferenciais | `features-section.tsx` | Garantia, financiamento, revisão inclusa, suporte 24h |
+| Modelos | `models-section.tsx` | Cards com os modelos em destaque (sedã, SUV, elétrico) |
+| CTA | `cta-section.tsx` | Chamada para agendar test-drive |
+| Footer | `site-footer.tsx` | Rodapé |
 
 ## Getting Started
 
@@ -40,6 +53,7 @@ Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-applica
 
 ```
 app/            # Rotas (App Router), layout e estilos globais
+components/     # Seções da landing page (hero, features, models, cta, header, footer)
 public/         # Arquivos estáticos
 CLAUDE.md       # Convenções e arquitetura do projeto
 AGENTS.md       # Instruções para agentes de IA (gerado pelo Next.js)
