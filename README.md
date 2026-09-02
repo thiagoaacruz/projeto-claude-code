@@ -30,3 +30,13 @@ Mais detalhes em [`projeto-1/README.md`](./projeto-1/README.md).
 ## Contexto
 
 Este repositório serve como material de prática para desenvolvimento assistido por agentes de IA (Claude Code), incluindo configuração de regras (`CLAUDE.md`, `AGENTS.md`, `rules-global/`) e skills que orientam o comportamento do agente durante o desenvolvimento.
+
+## Como contribuir
+
+Como o projeto passará a ter mais de uma pessoa trabalhando nele, `main` não recebe commits diretos. O fluxo é:
+
+1. Crie uma branch a partir da `main`, prefixada por `feat/`, `fix/` ou `chore/` seguida de uma descrição em kebab-case (ex: `feat/add-testimonials-section`)
+2. Faça commits e dê push da branch
+3. Abra um pull request para a `main` e aguarde revisão antes do merge
+
+Convenções de código (estrutura de pastas, Server Components, forms com Zod etc.) estão documentadas em [`projeto-1/CLAUDE.md`](./projeto-1/CLAUDE.md).
