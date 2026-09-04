@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Project: [Nome do Projeto]
+# Project: Aula Teste Claude (aula-teste-claude)
 
 ## Tech Stack
 
