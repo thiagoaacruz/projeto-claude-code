@@ -1,6 +1,6 @@
 export function CtaSection() {
   return (
-    <section id="contato" className="mx-auto w-full max-w-6xl px-6 pb-24">
+    <section className="mx-auto w-full max-w-6xl px-6 pb-24">
       <div className="flex flex-col items-center gap-6 rounded-2xl bg-foreground px-6 py-16 text-center text-background">
         <h2 className="max-w-lg text-3xl font-semibold tracking-tight">
           Pronto para dirigir o seu próximo carro?
