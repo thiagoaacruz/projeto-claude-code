@@ -1,6 +1,6 @@
 ---
 
-description: Cria um commit semântico baseado nas mudanças atuais
+description: Cria um commit semântico baseado nas mudanças atuais e publica a branch remota para code review
 allowed-tools: Bash(git*)
 -------------------------
 
@@ -10,7 +10,7 @@ Analise o estado atual do repositório e crie um commit seguindo **Conventional 
 
 O projeto segue obrigatoriamente o fluxo:
 
-`main → branch → alterações → validação → commit → push da branch → Pull Request → merge`
+`main → branch → alterações → validação → commit → push da branch → code review → Pull Request → merge`
 
 ## Regras de Commit
 
@@ -34,15 +34,14 @@ O projeto segue obrigatoriamente o fluxo:
 
 * Não utilizar mensagens genéricas como:
 
-  `update files`
-
-  `changes`
-
-  `fix stuff`
-
-  `adjustments`
+  * `update files`
+  * `changes`
+  * `fix stuff`
+  * `adjustments`
 
 * Se existir `$ARGUMENTS`, utilize-o como contexto adicional para entender a intenção das alterações.
+
+---
 
 ## Regra de Branch
 
@@ -50,19 +49,27 @@ Antes de realizar qualquer commit, execute:
 
 `git branch --show-current`
 
-Se a branch atual for `main`:
+### Se a branch atual for `main`
 
-1. Não realizar commit na `main`.
-2. Não realizar push na `main`.
-3. Analisar as alterações existentes.
-4. Determinar um nome apropriado para a nova branch.
-5. Criar a branch antes do commit.
+É proibido criar o commit diretamente na `main`.
 
-Exemplo:
+Siga obrigatoriamente:
 
-`git switch -c feat/autenticacao-jwt`
+1. Analise as alterações existentes.
 
-Utilize nomes de branch compatíveis com a alteração:
+2. Determine o tipo da alteração.
+
+3. Crie um nome apropriado para a branch.
+
+4. Crie e altere para a nova branch:
+
+   `git switch -c <nome-da-branch>`
+
+5. Continue o processo de staging e commit somente na nova branch.
+
+### Padrão de nomes
+
+Utilize:
 
 * `feat/nome-da-feature`
 * `fix/nome-do-problema`
@@ -70,6 +77,14 @@ Utilize nomes de branch compatíveis com a alteração:
 * `docs/nome-da-documentacao`
 * `test/nome-do-teste`
 * `chore/nome-da-tarefa`
+
+Exemplos:
+
+* `feat/autenticacao-jwt`
+* `fix/login-invalid-token`
+* `refactor/user-service`
+* `docs/update-api-documentation`
+* `test/auth-service`
 
 Nunca utilizar nomes genéricos como:
 
@@ -79,20 +94,25 @@ Nunca utilizar nomes genéricos como:
 * `fix`
 * `branch1`
 
+---
+
 ## Proteção da Main
 
-É proibido executar:
+Nunca executar:
 
 `git push origin main`
 
-Também não realizar:
+Também é proibido:
 
-* commit diretamente na `main`
-* merge diretamente na `main`
-* rebase destrutivo na `main`
-* force push na `main`
+* criar commit diretamente na `main`
+* realizar push diretamente na `main`
+* realizar merge diretamente na `main`
+* realizar force push na `main`
+* alterar o histórico da `main`
 
 A integração com a `main` deve ocorrer exclusivamente através de **Pull Request (PR)**.
+
+---
 
 ## Verificação Inicial
 
@@ -108,47 +128,43 @@ Antes de realizar qualquer alteração Git, execute:
 
 Analise:
 
+* branch atual
 * arquivos modificados
 * arquivos staged
 * arquivos unstaged
 * arquivos untracked
-* branch atual
 
-Não assuma que todas as alterações existentes pertencem à tarefa atual.
+Não assuma que todas as alterações existentes pertencem à mesma tarefa.
+
+---
 
 ## Staging
 
-Se já existirem arquivos staged:
+### Se existirem arquivos staged
 
-1. Analise somente esses arquivos com:
+Analise-os com:
 
-   `git diff --staged`
+`git diff --staged`
 
-2. Utilize essas alterações como base principal para o commit.
+Utilize essas alterações como base principal para o commit.
 
-Se não houver arquivos staged:
+### Se não existirem arquivos staged
 
-1. Execute:
-
-   `git status`
+1. Execute `git status`.
 
 2. Analise os arquivos modificados e untracked.
 
-3. Não execute `git add -A` automaticamente.
+3. Identifique quais arquivos pertencem à alteração atual.
 
-4. Identifique quais arquivos pertencem à alteração atual.
+4. Não execute `git add -A` automaticamente se houver alterações potencialmente não relacionadas.
 
-5. Solicite confirmação antes de adicionar arquivos ao staging.
+5. Prefira adicionar explicitamente:
 
-6. Prefira adicionar arquivos explicitamente:
+   `git add <arquivo>`
 
-   `git add caminho/do/arquivo`
+6. Se houver dúvida sobre quais arquivos devem entrar no commit, solicite confirmação do usuário.
 
-Evite:
-
-`git add -A`
-
-quando existirem alterações que possam não estar relacionadas à tarefa.
+---
 
 ## Criação do Commit
 
@@ -156,8 +172,8 @@ Depois de analisar as alterações staged:
 
 1. Determine o tipo do commit.
 2. Determine o escopo.
-3. Gere uma mensagem seguindo Conventional Commits.
-4. Verifique se a mensagem representa corretamente todas as alterações staged.
+3. Gere a mensagem seguindo Conventional Commits.
+4. Verifique se todas as alterações staged pertencem à mesma finalidade.
 5. Execute:
 
    `git commit -m "tipo(escopo): descrição"`
@@ -166,29 +182,130 @@ Exemplo:
 
 `git commit -m "feat(auth): add JWT authentication"`
 
-## Push
+---
 
-Não realizar push automaticamente após criar o commit.
+## Publicação da Branch Remota
 
-O commit local pode ser criado sem confirmação adicional desde que esteja em uma branch diferente da `main`.
+Após criar o commit com sucesso, a branch de trabalho deve estar disponível no repositório remoto para permitir **code review por outros desenvolvedores**.
 
-O push deve ser executado somente quando solicitado explicitamente pelo usuário.
+### Regra obrigatória
 
-Antes do push:
+Depois do commit:
 
 1. Verifique novamente a branch atual:
 
    `git branch --show-current`
 
-2. Confirme que não é `main`.
+2. Confirme que a branch atual **não é `main`**.
 
-3. Execute:
+3. Verifique se a branch já possui upstream remoto:
 
-   `git push -u origin <branch-atual>`
+   `git rev-parse --abbrev-ref --symbolic-full-name @{u}`
 
-Nunca executar:
+4. Se a branch ainda não existir no remoto ou não possuir upstream, publique-a:
 
-`git push origin main`
+   `git push -u origin <nome-da-branch>`
+
+5. Se a branch já possuir upstream configurado, publique o novo commit com:
+
+   `git push`
+
+6. Nunca publicar diretamente na `main`.
+
+### Objetivo
+
+A branch remota deve permitir que outro desenvolvedor possa:
+
+* acessar as alterações
+* realizar checkout da branch
+* analisar o código
+* executar testes
+* realizar code review
+* colaborar na mesma branch quando necessário
+* preparar ou revisar o Pull Request
+
+### Fluxo
+
+`branch local`
+
+↓
+
+`commit`
+
+↓
+
+`git push -u origin <branch>`
+
+↓
+
+`origin/<branch>`
+
+↓
+
+`Code Review`
+
+↓
+
+`Pull Request`
+
+↓
+
+`main`
+
+---
+
+## Code Review
+
+Após publicar a branch remota:
+
+* Não realizar merge automático na `main`.
+* Não excluir a branch remota.
+* Não realizar force push.
+* Manter a branch disponível para revisão.
+* Alterações solicitadas durante o code review devem gerar novos commits na mesma branch.
+* Após novos commits, realizar `git push` para atualizar a branch remota.
+
+Exemplo:
+
+`feat/autenticacao-jwt`
+
+↓
+
+`commit 1`
+
+↓
+
+`push`
+
+↓
+
+`code review`
+
+↓
+
+`ajustes solicitados`
+
+↓
+
+`commit 2`
+
+↓
+
+`push`
+
+↓
+
+`novo code review`
+
+↓
+
+`Pull Request aprovado`
+
+↓
+
+`merge na main`
+
+---
 
 ## Comandos Git Proibidos
 
@@ -210,9 +327,11 @@ Não executar automaticamente:
 
 `git restore .`
 
-Esses comandos podem destruir alterações locais ou modificar histórico.
+Esses comandos podem destruir alterações locais ou modificar o histórico compartilhado.
 
-Se alguma dessas operações for realmente necessária, explicar o motivo e solicitar confirmação explícita do usuário.
+Se alguma dessas operações for realmente necessária, explique o motivo e solicite confirmação explícita do usuário.
+
+---
 
 ## Preservação de Alterações
 
@@ -227,37 +346,49 @@ Se forem encontradas alterações que aparentemente não pertencem à tarefa:
 
 Informe o usuário antes de prosseguir.
 
+---
+
 ## Validação Final
 
-Antes do commit, confirme:
-
-* branch atual não é `main`
-* alterações staged foram analisadas
-* arquivos do commit pertencem à mesma finalidade
-* nenhuma alteração desconhecida será incluída
-* mensagem segue Conventional Commits
-
-Depois do commit, execute:
+Após o commit e o push, execute:
 
 `git status`
 
-e informe:
+Verifique:
 
-* branch utilizada
+* branch atual
+* commit criado
+* branch remota publicada
+* upstream configurado
+* alterações locais restantes
+
+Informe ao usuário:
+
+* nome da branch
+* mensagem do commit
 * hash do commit
-* mensagem criada
 * arquivos incluídos
+* branch remota publicada
 * se existem alterações restantes
+* que a branch está disponível para code review
+
+---
 
 ## Definition of Done
 
-O comando é considerado concluído quando:
+O comando somente é considerado concluído quando:
 
-* o commit foi criado em uma branch válida
+* o commit foi criado em uma branch diferente da `main`
+* o commit segue Conventional Commits
 * nenhuma alteração foi descartada
 * nenhuma alteração não relacionada foi incluída sem autorização
-* o commit segue Conventional Commits
+* a branch foi publicada no repositório remoto
+* o upstream da branch está configurado
+* a branch está disponível para code review
 * nenhum push direto para `main` foi realizado
+* nenhum merge automático na `main` foi realizado
+
+---
 
 ## Contexto adicional
 
