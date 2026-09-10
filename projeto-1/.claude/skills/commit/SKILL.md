@@ -855,3 +855,271 @@ A skill somente é considerada concluída quando:
 - nenhum push direto para `main` foi realizado;
 - nenhum merge automático na `main` foi realizado;
 - nenhum comando destrutivo foi executado sem autorização.
+
+
+# Neutralidade de IA em Commits e Pull Requests
+
+Commits, branches e Pull Requests devem descrever exclusivamente as
+alterações realizadas no projeto.
+
+É proibido incluir qualquer referência ao Claude ou a qualquer outra
+ferramenta de Inteligência Artificial.
+
+Esta regra se aplica a:
+
+- nome da branch;
+- type e scope do Conventional Commit;
+- título e mensagem do commit;
+- body e footer do commit;
+- título do Pull Request;
+- descrição do Pull Request.
+
+Nunca utilizar nomes ou referências como:
+
+- Claude;
+- Claude Code;
+- Anthropic;
+- ChatGPT;
+- OpenAI;
+- Copilot;
+- GitHub Copilot;
+- Gemini;
+- Cursor;
+- IA;
+- AI;
+- LLM;
+- agent;
+- assistant;
+- nomes de modelos;
+- nomes de fornecedores;
+- qualquer outra ferramenta ou serviço de IA.
+
+A lista acima é apenas exemplificativa. A regra se aplica a qualquer
+ferramenta de IA atual ou futura.
+
+A ferramenta utilizada durante o desenvolvimento nunca deve influenciar
+nomes de branches, commits ou Pull Requests.
+
+---
+
+## Regra para Branch
+
+O nome da branch deve representar exclusivamente a alteração realizada
+no projeto.
+
+Para determinar o nome da branch, utilize esta ordem de prioridade:
+
+1. funcionalidade principal alterada;
+2. classe principal alterada;
+3. módulo ou domínio afetado;
+4. componente técnico afetado.
+
+Formato preferencial:
+
+`<type>/<functional-context>`
+
+Exemplos corretos:
+
+`feat/jwt-authentication`
+
+`feat/user-registration`
+
+`fix/user-validation`
+
+`fix/payment-service`
+
+`refactor/order-service`
+
+`perf/database-query`
+
+`test/auth-service`
+
+Nunca utilizar como contexto da branch a ferramenta utilizada para
+realizar a alteração.
+
+Exemplos proibidos:
+
+`chore/claude`
+
+`chore/ai`
+
+`feat/copilot-update`
+
+`refactor/agent-workflow`
+
+`chore/assistant-config`
+
+### Múltiplas classes
+
+Se várias classes forem alteradas para implementar a mesma funcionalidade,
+utilize o nome da funcionalidade ou domínio comum.
+
+Exemplo:
+
+Arquivos alterados:
+
+`AuthController.java`
+
+`AuthService.java`
+
+`JwtTokenService.java`
+
+`SecurityConfig.java`
+
+Branch correta:
+
+`feat/jwt-authentication`
+
+Evite:
+
+`feat/auth-controller`
+
+### Uma classe principal
+
+Se a alteração estiver concentrada em uma única classe e não existir uma
+funcionalidade mais específica que represente melhor a mudança, utilize
+a classe como contexto.
+
+Exemplo:
+
+`UserService.java`
+
+Branch:
+
+`refactor/user-service`
+
+Exemplo:
+
+`PaymentService.java`
+
+Branch:
+
+`fix/payment-service`
+
+---
+
+## Regra para Commit
+
+O type, scope e description devem representar exclusivamente a alteração
+realizada no projeto.
+
+O scope deve representar:
+
+- funcionalidade;
+- módulo;
+- domínio;
+- classe;
+- componente;
+- área técnica afetada.
+
+Exemplos corretos:
+
+`feat(auth): add JWT authentication`
+
+`feat(user): add registration validation`
+
+`fix(user): correct email validation`
+
+`fix(payment): handle declined transaction`
+
+`refactor(order): simplify order processing`
+
+`perf(database): optimize user query`
+
+Nunca utilizar a ferramenta utilizada durante o desenvolvimento como
+type, scope ou descrição do commit.
+
+Exemplos proibidos:
+
+`chore(claude): migrate command to skill`
+
+`chore(ai): update workflow`
+
+`feat(copilot): add authentication`
+
+`refactor(agent): simplify user service`
+
+A mensagem deve responder:
+
+"O que foi alterado no projeto?"
+
+e nunca:
+
+"Qual ferramenta foi utilizada para fazer a alteração?"
+
+---
+
+## Regra para Pull Request
+
+O título e a descrição do Pull Request devem representar exclusivamente
+a alteração realizada no projeto.
+
+O título deve resumir claramente a funcionalidade, correção ou
+refatoração realizada.
+
+Exemplos:
+
+`Add JWT authentication`
+
+`Fix user email validation`
+
+`Refactor order processing`
+
+`Optimize database queries`
+
+A descrição do Pull Request deve conter somente informações relevantes
+ao desenvolvimento, como:
+
+- o que foi alterado;
+- por que foi alterado;
+- impacto da alteração;
+- principais decisões técnicas;
+- testes realizados;
+- validações realizadas;
+- breaking changes, quando aplicável;
+- issues ou tickets relacionados, quando aplicável.
+
+Nunca mencionar qual ferramenta foi utilizada para produzir, modificar,
+analisar ou auxiliar na implementação.
+
+---
+
+## Verificação Obrigatória
+
+Antes de realizar o push ou criar um Pull Request, verifique se:
+
+- o nome da branch;
+- o type do commit;
+- o scope do commit;
+- a descrição do commit;
+- o body do commit;
+- o footer do commit;
+- o título do Pull Request;
+- a descrição do Pull Request
+
+não possuem referências ao Claude ou a qualquer outra ferramenta de IA.
+
+Se qualquer referência for encontrada:
+
+1. NÃO realizar o push;
+2. NÃO criar o Pull Request;
+3. identificar onde a referência foi encontrada;
+4. substituir a referência por um contexto relacionado à alteração real;
+5. validar novamente;
+6. somente continuar quando branch, commit e Pull Request estiverem
+   completamente neutros em relação à ferramenta utilizada.
+
+---
+
+## Regra Final
+
+Branch, commit e Pull Request devem permitir que outro desenvolvedor
+entenda:
+
+- qual funcionalidade foi alterada;
+- qual classe, módulo ou domínio foi afetado;
+- qual problema foi resolvido;
+- qual foi o impacto técnico da alteração.
+
+Eles nunca devem indicar qual ferramenta, assistente ou tecnologia de IA
+foi utilizada durante o desenvolvimento.
